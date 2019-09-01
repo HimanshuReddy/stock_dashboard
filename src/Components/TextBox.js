@@ -6,7 +6,10 @@ const styles = {
     textAlign: 'center',
   },
   label: {
-     
+     margin: '10px'
+  },
+  input: {
+    margin: '5px'
   }  
 }
 
@@ -14,8 +17,8 @@ function TextBox({ onSubmit }) {
   return (
     <form style={styles.form} onSubmit={onSubmit}>
       <label style={styles.label}>
-        Add Item:
-        <input type="text" />
+        Add Symbol:
+        <input style={styles.input} type="text" />
       </label>
       <button type="submit">Submit</button>
     </form>

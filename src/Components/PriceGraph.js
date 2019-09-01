@@ -38,7 +38,7 @@ class PriceGraph extends React.Component {
   render() {
     return (
       <div style={styles.divStyle}>
-        <h1>Price Graph</h1>
+        <h2>Daily High and Low</h2>
         {!this.state.graphData.length < 1 ? (
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart
