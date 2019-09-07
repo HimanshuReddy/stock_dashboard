@@ -3,6 +3,7 @@ import TextBox from './Components/TextBox';
 import StockBar from './Components/StockBar';
 import StockButtons from './Components/StockButtons';
 import PriceGraph from './Components/PriceGraph';
+import RatingGraph from './Components/RatingGraph';
 
 // API Used: https://financialmodelingprep.com/developer/docs/
 
@@ -23,7 +24,6 @@ class App extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onClick = this.onClick.bind(this);
-    //this.getPriceHistory = this.getPriceHistory.bind(this);
   }
 
   // SECTION: Lifecycle hooks
@@ -70,17 +70,6 @@ class App extends React.Component {
       return 'ERROR';
     }
   }
-  
-  async getRating(symbol) {
-    const stockRatingURL = 'https://financialmodelingprep.com/api/v3/company/rating/';
-    try {
-      let rawData = await fetch(stockRatingURL + symbol);
-      let data = await rawData.json();
-      return data.rating.score;
-    } catch (err) {
-      return 0;
-    }
-  }
 
   // Accepts a stock symbol as a string
   // Return an array of the price history
@@ -95,6 +84,21 @@ class App extends React.Component {
     }
   }
 
+
+  // Accepts a stock symbol as a string 
+  // Returns an array of stock rating values, in the order of [[name, rating], [name, rating], ...]
+  async getRating(symbol) {
+    try {
+      const stockRatingURL = `https://financialmodelingprep.com/api/v3/company/rating/${symbol}`;
+      let rawData = await fetch(stockRatingURL);
+      let data = await rawData.json();
+      let {rating, ratingDetails} = data;
+      return [['Overall', rating.score], ['P/B', ratingDetails['P/B']['score']], ['ROA', ratingDetails['ROA']['score']], ['DCF', ratingDetails['DCF']['score']], 
+            ['P/E', ratingDetails['P/E']['score']], ['ROE', ratingDetails['ROE']['score']], ['D/E', ratingDetails['D/E']['score']]];
+    } catch(err) {
+      return {}
+    }
+  }
 
 
   // SECTION: Callbacks
@@ -133,6 +137,7 @@ class App extends React.Component {
         <StockButtons symbols={this.state.stockSymbols} onClick={this.onClick} />
         <StockBar symbol={this.state.currentStock} getProfile={this.getProfile} />
         <PriceGraph symbol={this.state.currentStock} getPriceHistory={this.getPriceHistory} />
+        <RatingGraph symbol={this.state.currentStock} getRating={this.getRating}/>
       </React.Fragment>
     );
   }
