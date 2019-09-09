@@ -27,6 +27,10 @@ class RatingGraph extends React.Component {
 
   async generateGraphData() {
     let ratingInfo = await this.props.getRating(this.props.symbol);
+    // This is to handle failures in getting the data (which happens with the GOOG symbol)
+    if (Object.keys(ratingInfo).length === 0) {
+      return [[], []];
+    } 
     let graphData = [];
     for (let i = 1; i < ratingInfo.length; i++) {
       graphData.push({
@@ -34,7 +38,6 @@ class RatingGraph extends React.Component {
         rating: ratingInfo[i][1]
       })
     }
-    console.log('here');
     return [ratingInfo[0][1], graphData];
   }
 
