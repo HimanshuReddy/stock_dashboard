@@ -8,7 +8,7 @@ You can run this program with the command "npm start".
 
 TOOLING:
 
-I used react to build the user interface.
+I used React to build the user interface.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
